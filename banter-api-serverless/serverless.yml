@@ -1,0 +1,42 @@
+
+service: banter-api-serverless
+
+provider:
+  name: aws
+  stage: dev
+  region: us-east-1
+
+package:
+  individually: true
+
+functions:
+  HelloWorld:
+    runtime: nodejs6.10
+    handler: lambdas/hello-world/index.handler
+    package:
+      include:
+        - lambdas/hello-world/**
+    events:
+      - http:
+          path: hello
+          method: GET
+          authorizer: authorizerFunc
+
+  AddAccount:
+    runtime: nodejs6.10
+    handler: lambdas/account/add/index.handler
+    package:
+      include:
+        - lambdas/account/add/**
+    events:
+      - http:
+          path: account/add
+          method: POST
+          authorizer: authorizerFunc
+
+  authorizerFunc:
+    runtime: nodejs6.10
+    handler: lambdas/authorizer/index.handler
+    package:
+      include:
+        - lambdas/authorizer/**
