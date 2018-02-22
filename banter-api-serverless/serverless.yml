@@ -12,7 +12,7 @@ package:
 functions:
   HelloWorld:
     runtime: nodejs6.10
-    handler: lambdas/hello-world/index.handler
+    handler: lambdas/hello-world/handler.handler
     package:
       include:
         - lambdas/hello-world/**
@@ -24,7 +24,7 @@ functions:
 
   AddAccount:
     runtime: nodejs6.10
-    handler: lambdas/account/add/index.handler
+    handler: lambdas/account/add/handler.handler
     package:
       include:
         - lambdas/account/add/**
@@ -34,7 +34,18 @@ functions:
           method: POST
           authorizer: authorizerFunc
 
-  authorizerFunc:
+  RegisterUser:
+    runtime: python3.6
+    handler: lambdas/cognito/post-confirm-sign-up-user/handler.handler
+    package:
+      include:
+        - lambdas/cognito/post-confirm-sign-up-user/**
+    events:
+      - http:
+          path: user/register
+          method: POST
+
+  AuthorizerFunc:
     runtime: nodejs6.10
     handler: lambdas/authorizer/index.handler
     package:
