@@ -4,3 +4,12 @@ def handler(event, context):
     return { 
         'message' : message
     }  
+
+def respond(err, response=None):
+	return {
+		'statusCode': '400' if err else '200',
+		'body': err if err else json.dumps(response),
+		'headers': {
+			'Content-Type': 'application/json',
+		},
+	}
