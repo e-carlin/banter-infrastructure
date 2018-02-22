@@ -1,9 +1,9 @@
+import json
+
 def handler(event, context):
-    message = 'Hello {} {}!'.format(event['first_name'], 
-                                    event['last_name'])  
-    return { 
-        'message' : message
-    }  
+	print("EVENT: {}".format(event))
+	message = 'Hello Evan'  
+	return respond(None, message) 
 
 def respond(err, response=None):
 	return {
