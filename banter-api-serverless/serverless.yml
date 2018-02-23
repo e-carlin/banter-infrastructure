@@ -20,7 +20,7 @@ functions:
       - http:
           path: hello
           method: GET
-          authorizer: authorizerFunc
+          authorizer: AuthorizerFunc
 
   AddAccount:
     runtime: nodejs6.10
@@ -32,14 +32,19 @@ functions:
       - http:
           path: account/add
           method: POST
-          authorizer: authorizerFunc
+          authorizer: AuthorizerFunc
 
   RegisterUser:
-    runtime: python3.6
+    # runtime: python3.6
+    # handler: lambdas/cognito/post-confirm-sign-up-user/handler.handler
+    # package:
+    #   include:
+    #     - lambdas/cognito/post-confirm-sign-up-user/**
+    runtime: nodejs6.10
     handler: lambdas/cognito/post-confirm-sign-up-user/handler.handler
     package:
       include:
-        - lambdas/cognito/post-confirm-sign-up-user/**
+        - lambdas/cognito/post-confirm-sign-up-user/handler.js
     events:
       - http:
           path: user/register
@@ -47,7 +52,7 @@ functions:
 
   AuthorizerFunc:
     runtime: nodejs6.10
-    handler: lambdas/authorizer/index.handler
+    handler: lambdas/authorizer/handler.handler
     package:
       include:
         - lambdas/authorizer/**
