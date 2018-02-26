@@ -1,0 +1,10 @@
+{
+    "user_id" : "xxx", //Hash key
+    "institutions" : [
+        {
+            "item_id" : "xxx", //GSI
+            "access_token" :"xxx",
+
+        }
+    ]
+}
