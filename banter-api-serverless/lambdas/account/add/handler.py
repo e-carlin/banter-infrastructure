@@ -1,63 +1,70 @@
 import json
-import plaid
+import logging
+from plaid import Client
+from marshmallow import Schema, fields, ValidationError
+
+PLAID_CLIENT_ID = '59dd926b4e95b872dbbb6cdf'
+PLAID_SECRET_KEY = '2e17db39ac71ebd3810b276801569e'
+PLAID_PUBLIC_KEY = '74912a00575badb2f1b0f1b8bdfde2'
+PLAID_ENV = 'sandbox'
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def handler(event, context):
-  print("Hello from add account")
+  logger.info('Handler called. Event: {}'.format(event))
+  
+  client = get_plaid_client()
+
   return {
     'status' : 200,
     'body' : json.dumps(event)
   }
 
+
+def get_plaid_client():
+  try:
+    client = Client(client_id=PLAID_CLIENT_ID,
+                          secret=PLAID_SECRET_KEY,
+                          public_key=PLAID_PUBLIC_KEY,
+                          environment=PLAID_ENV)
+    return client
+  except Exception as e:
+    logger.error('Exception raised when trying to create Plaid client. Exception: {}'.format(e))
+    raise Exception("Error creating Plaid client")
+
+
+class AddAccountSchema(Schema):
+    account_type = fields.String(required=True,
+        error_messages={'required' : 'account_type is a required field'}
+    )
+    public_token = fields.String(required=True,
+        error_messages={'required' : 'public_token is a required field'}
+    )
+    account_id = fields.String(required=True,
+        error_messages={'required' : 'account_id is a required field'}
+    )
+    account_name = fields.String(required=True,
+        error_messages={'required' : 'account_name is a required field'}
+    )
+    link_session_id = fields.String(required=True,
+        error_messages={'required' : 'link_session_id is a required field'}
+    )
+    # TODO: We should make a nested schema to validate the fields in the accounts object
+    accounts = fields.String(required=True,
+        error_messages={'required' : 'accounts is a required field'}
+    )
+    institution_name = fields.String(required=True,
+        error_messages={'required' : 'institution_name is a required field'}
+    )
+    institution_id = fields.String(required=True,
+        error_messages={'required' : 'institution_id is a required field'}
+    )
+
 if __name__ == "__main__":
   handler(1,2)
 
-#  'use strict';
-# console.log('Loading hello world function');
-
-# const plaid = require('plaid');
-
-# const client_id='59dd926b4e95b872dbbb6cdf';
-# const secret='2e17db39ac71ebd3810b276801569e';
-# const public_key='74912a00575badb2f1b0f1b8bdfde2';
-# const plaid_env='sandbox';
- 
-# exports.handler = function(event, context, callback) {
-#   console.log("EVENT: "+event);
-
-#   const plaidClient = new plaid.Client(client_id, secret, public_key, plaid.environments[plaid_env]);
-#   console.log("PlaidClient: "+ JSON.stringify(plaidClient));
-#   plaidClient.exchangePublicToken("abc123", function(error, tokenResponse) {
-#     if (error != null) {
-#       var msg = 'Could not exchange public_token!';
-#       console.log(msg + '\n' + error);
-#       console.log("RESP: "+tokenResponse);
-#       context.fail("Error exchanging public token");
-#     }
-#     else{
-#       ACCESS_TOKEN = tokenResponse.access_token;
-#       ITEM_ID = tokenResponse.item_id;
-#       console.log('Access Token: ' + ACCESS_TOKEN);
-#       console.log('Item ID: ' + ITEM_ID);
-#       context.succed("Success exchanging public token");
-#     }
-#   });
-    
-#     // The output from a Lambda proxy integration must be 
-#     // of the following JSON object. The 'headers' property 
-#     // is for custom response headers in addition to standard 
-#     // ones. The 'body' property  must be a JSON string. For 
-#     // base64-encoded payload, you must also set the 'isBase64Encoded'
-#     // property to 'true'.
-#     // var response = {
-#     //     statusCode: 200,
-#     //     body: JSON.stringify({
-#     //       "hello" : "from add account"
-#     //     })
-#     // };
-#     // console.log("response: " + JSON.stringify(response))
-#     // callback(null, response);
-# };
-
-
-# // node -p "require('./handler.js').handler(1,2,3)"
-# // sam local invoke "AddAccount" -e .\test.json
+# node -p "require('./handler.js').handler(1,2,3)"
+# sam local invoke "AddAccount" -e .\test.json
+# docker run --rm -v C:\Users\evan.carlin\Documents\personal\banter\infrastructure\banter-api-serverless\build:/var/task lambci/lambda:python3.6 lambdas/account/add/handler.handler
+# pip install marshmallow --pre -t build (--pre is only for marshmallow exclued it for install for any other package)
