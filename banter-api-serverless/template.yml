@@ -84,11 +84,10 @@ Resources:
   AddAccount:
     Type: 'AWS::Serverless::Function'
     Properties:
+      RunTime: python3.6
       Handler: lambdas/account/add/handler.handler
       MemorySize: 128
       Timeout: 3
-      Runtime: "python3.6"
-      CodeUri: build
       Events:
         Event1:
           Type: Api

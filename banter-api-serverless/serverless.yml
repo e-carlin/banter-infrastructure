@@ -5,10 +5,12 @@ provider:
   name: aws
   stage: dev
   region: us-east-1
+  runtime: python3.6 # Specify this so that the proper docker image can be pulled to package python dependencies.
+                    # I believe this doesn't mess up the node functions because they overrwrite their runtime
 
 plugins:
   - serverless-python-requirements
-  #   - serverless-sam
+    # - serverless-sam
 
 custom:
   pythonRequirements:
@@ -16,6 +18,8 @@ custom:
 
 package:
   individually: true
+  exclude:
+    - '**/*'
 
 functions:
   HelloWorld:
