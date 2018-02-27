@@ -1,0 +1,113 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'SAM template for Serverless framework service: '
+Resources:
+  HelloWorld:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambdas/hello-world/handler.handler
+      MemorySize: 128
+      Timeout: 3
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: GET
+            RestApiId:
+              Ref: BanterApiServerless
+  AuthorizerFuncResourcePolicy:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        'Fn::GetAtt':
+          - AuthorizerFunc
+          - Arn
+      Principal: apigateway.amazonaws.com
+      SourceAccount:
+        Ref: 'AWS::AccountId'
+  BanterApiServerless:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      StageName: dev
+      DefinitionBody:
+        swagger: '2.0'
+        info:
+          title:
+            Ref: 'AWS::StackName'
+        paths:
+          /hello:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HelloWorld.Arn}/invocations
+              responses: {}
+              security:
+                - AuthorizerFunc: []
+          /account/add:
+            post:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  'Fn::Sub': >-
+                    arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AddAccount.Arn}/invocations
+              responses: {}
+              security:
+                - AuthorizerFunc: []
+        securityDefinitions:
+          AuthorizerFunc:
+            type: apiKey
+            name: AuthorizerFunc
+            in: header
+            x-amazon-apigateway-authtype: oauth2
+            x-amazon-apigateway-authorizer:
+              type: token
+              authorizerUri:
+                'Fn::Sub': >-
+                  arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizerFunc.Arn}/invocations
+              identityValidationExpression: '^x-[a-z]+'
+              authorizerResultTtlInSeconds: 60
+  HelloWorldLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - HelloWorld
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: HelloWorld
+      Principal: apigateway.amazonaws.com
+  AddAccount:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambdas/account/add/handler.handler
+      MemorySize: 128
+      Timeout: 3
+      Runtime: "nodejs6.10"
+      Events:
+        Event1:
+          Type: Api
+          Properties:
+            Path: /account/add
+            Method: POST
+            RestApiId:
+              Ref: BanterApiServerless
+  AddAccountLambdaPermission:
+    Type: 'AWS::Lambda::Permission'
+    DependsOn:
+      - AddAccount
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName:
+        Ref: AddAccount
+      Principal: apigateway.amazonaws.com
+  AuthorizerFunc:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambdas/authorizer/handler.handler
+      MemorySize: 128
+      Timeout: 3

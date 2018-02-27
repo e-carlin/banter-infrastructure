@@ -1,0 +1,20 @@
+//Accounts
+{
+    "user_email" : "xxx", //Hash key
+    "item_id" : "xxx", //GSI
+    "institution_name" : "xxx", //Not sure if it makes sense to duplicate this field from institutions table
+    "accounts" : [
+        {
+            "id" : "xxx",
+            "name" : "xxx",
+            "type" : "xxx",
+            "subtype" : "xxx",
+            "balances" : {
+                "available" : 123,
+                "current" : 123,
+                "limit" : 123
+            }
+        }
+    ]
+
+}

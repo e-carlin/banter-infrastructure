@@ -1,0 +1,30 @@
+//Transactions
+{
+    "user_email" : "xxx", //Hash key
+    "date" : "xxx", //Range key
+    "account_id": "xxx",
+    "amount": 123.456,
+    "category": [
+      "xxx"
+    ],
+    "category_id": "xxx",
+    "date": "xxx",
+    "location": {
+     "address": "xxx",
+     "city": "xxx",
+     "state": "xxx",
+     "zip": "xxx",
+     "lat": "xxx",
+     "lon": "xxx"
+    },
+    "name": "xxx",
+    "payment_meta": {
+    },
+    "pending": false,
+    "pending_transaction_id": "xxx",
+    "account_owner": "xxx",
+    "transaction_id": "xxx",
+    "transaction_type": "xxx"
+
+
+}

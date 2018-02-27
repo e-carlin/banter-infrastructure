@@ -6,6 +6,9 @@ provider:
   stage: dev
   region: us-east-1
 
+plugins:
+  - serverless-sam
+
 package:
   individually: true
 
@@ -33,22 +36,6 @@ functions:
           path: account/add
           method: POST
           authorizer: AuthorizerFunc
-
-  RegisterUser:
-    # runtime: python3.6
-    # handler: lambdas/cognito/post-confirm-sign-up-user/handler.handler
-    # package:
-    #   include:
-    #     - lambdas/cognito/post-confirm-sign-up-user/**
-    runtime: nodejs6.10
-    handler: lambdas/cognito/post-confirm-sign-up-user/handler.handler
-    package:
-      include:
-        - lambdas/cognito/post-confirm-sign-up-user/handler.js
-    events:
-      - http:
-          path: user/register
-          method: POST
 
   AuthorizerFunc:
     runtime: nodejs6.10

@@ -3,30 +3,29 @@
   "Description": "The AWS CloudFormation template for this Serverless application",
   "Resources": {
     "ServerlessDeploymentBucket": {
-      "Type": "AWS::S3::Bucket"
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccelerateConfiguration": {
+          "AccelerationStatus": "Suspended"
+        }
+      }
     },
     "HelloWorldLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/banter-api-serverless-dev-HelloWorld"
+        "LogGroupName": "/aws/lambda/undefined"
       }
     },
     "AddAccountLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/banter-api-serverless-dev-AddAccount"
-      }
-    },
-    "RegisterUserLogGroup": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "LogGroupName": "/aws/lambda/banter-api-serverless-dev-RegisterUser"
+        "LogGroupName": "/aws/lambda/undefined"
       }
     },
     "AuthorizerFuncLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/banter-api-serverless-dev-AuthorizerFunc"
+        "LogGroupName": "/aws/lambda/undefined"
       }
     },
     "IamRoleLambdaExecution": {
@@ -70,16 +69,13 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-HelloWorld:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/undefined:*"
                     },
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-AddAccount:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/undefined:*"
                     },
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-RegisterUser:*"
-                    },
-                    {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-AuthorizerFunc:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/undefined:*"
                     }
                   ]
                 },
@@ -90,16 +86,13 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-HelloWorld:*:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/undefined:*:*"
                     },
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-AddAccount:*:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/undefined:*:*"
                     },
                     {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-RegisterUser:*:*"
-                    },
-                    {
-                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/banter-api-serverless-dev-AuthorizerFunc:*:*"
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/undefined:*:*"
                     }
                   ]
                 }
@@ -120,556 +113,12 @@
           ]
         }
       }
-    },
-    "HelloWorldLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/banter-api-serverless/dev/1519365858948-2018-02-23T06:04:18.948Z/HelloWorld.zip"
-        },
-        "FunctionName": "banter-api-serverless-dev-HelloWorld",
-        "Handler": "lambdas/hello-world/handler.handler",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs6.10",
-        "Timeout": 6
-      },
-      "DependsOn": [
-        "HelloWorldLogGroup",
-        "IamRoleLambdaExecution"
-      ]
-    },
-    "HelloWorldLambdaVersionOODNVCmd1MCZHrZdncNcFTx2zoRU0ZSvskk5SodR6A": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "HelloWorldLambdaFunction"
-        },
-        "CodeSha256": "JwYkx2McQEnfybD8VjDRNkXqIOWKZumDRq0bv/kEFOc="
-      }
-    },
-    "AddAccountLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/banter-api-serverless/dev/1519365858948-2018-02-23T06:04:18.948Z/AddAccount.zip"
-        },
-        "FunctionName": "banter-api-serverless-dev-AddAccount",
-        "Handler": "lambdas/account/add/handler.handler",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs6.10",
-        "Timeout": 6
-      },
-      "DependsOn": [
-        "AddAccountLogGroup",
-        "IamRoleLambdaExecution"
-      ]
-    },
-    "AddAccountLambdaVersion5MEZXyG7BoYNHKLOndKFSHBcbPmSoX1Su4qSdWsVpw": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "AddAccountLambdaFunction"
-        },
-        "CodeSha256": "JwYkx2McQEnfybD8VjDRNkXqIOWKZumDRq0bv/kEFOc="
-      }
-    },
-    "RegisterUserLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/banter-api-serverless/dev/1519365858948-2018-02-23T06:04:18.948Z/RegisterUser.zip"
-        },
-        "FunctionName": "banter-api-serverless-dev-RegisterUser",
-        "Handler": "lambdas/cognito/post-confirm-sign-up-user/handler.handler",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs6.10",
-        "Timeout": 6
-      },
-      "DependsOn": [
-        "RegisterUserLogGroup",
-        "IamRoleLambdaExecution"
-      ]
-    },
-    "RegisterUserLambdaVersionKzxH1TScD0De0Rv5h2iEUenvU0pZriurFTIz26aDM": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "RegisterUserLambdaFunction"
-        },
-        "CodeSha256": "JwYkx2McQEnfybD8VjDRNkXqIOWKZumDRq0bv/kEFOc="
-      }
-    },
-    "AuthorizerFuncLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/banter-api-serverless/dev/1519365858948-2018-02-23T06:04:18.948Z/AuthorizerFunc.zip"
-        },
-        "FunctionName": "banter-api-serverless-dev-AuthorizerFunc",
-        "Handler": "lambdas/authorizer/handler.handler",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs6.10",
-        "Timeout": 6
-      },
-      "DependsOn": [
-        "AuthorizerFuncLogGroup",
-        "IamRoleLambdaExecution"
-      ]
-    },
-    "AuthorizerFuncLambdaVersionrXJujcgWNviIPCNckbyEgd2RVZ40nwKy3AxNBA9vzq0": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "AuthorizerFuncLambdaFunction"
-        },
-        "CodeSha256": "JwYkx2McQEnfybD8VjDRNkXqIOWKZumDRq0bv/kEFOc="
-      }
-    },
-    "ApiGatewayRestApi": {
-      "Type": "AWS::ApiGateway::RestApi",
-      "Properties": {
-        "Name": "dev-banter-api-serverless",
-        "EndpointConfiguration": {
-          "Types": [
-            "EDGE"
-          ]
-        }
-      }
-    },
-    "ApiGatewayResourceHello": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "hello",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceAccount": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "account",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceAccountAdd": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Ref": "ApiGatewayResourceAccount"
-        },
-        "PathPart": "add",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceUser": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "user",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceUserRegister": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Ref": "ApiGatewayResourceUser"
-        },
-        "PathPart": "register",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayMethodHelloGet": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "GET",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceHello"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "CUSTOM",
-        "AuthorizerId": {
-          "Ref": "AuthorizerFuncApiGatewayAuthorizer"
-        },
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:aws:apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "HelloWorldLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      },
-      "DependsOn": "AuthorizerFuncApiGatewayAuthorizer"
-    },
-    "ApiGatewayMethodAccountAddPost": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "POST",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceAccountAdd"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "CUSTOM",
-        "AuthorizerId": {
-          "Ref": "AuthorizerFuncApiGatewayAuthorizer"
-        },
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:aws:apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "AddAccountLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      },
-      "DependsOn": "AuthorizerFuncApiGatewayAuthorizer"
-    },
-    "ApiGatewayMethodUserRegisterPost": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "POST",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceUserRegister"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:aws:apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "RegisterUserLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      }
-    },
-    "AuthorizerFuncApiGatewayAuthorizer": {
-      "Type": "AWS::ApiGateway::Authorizer",
-      "Properties": {
-        "IdentitySource": "method.request.header.Authorization",
-        "Name": "AuthorizerFunc",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "AuthorizerUri": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:apigateway:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":lambda:path/2015-03-31/functions/",
-              {
-                "Fn::GetAtt": [
-                  "AuthorizerFuncLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "/invocations"
-            ]
-          ]
-        },
-        "Type": "TOKEN"
-      }
-    },
-    "ApiGatewayDeployment1519365859022": {
-      "Type": "AWS::ApiGateway::Deployment",
-      "Properties": {
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "StageName": "dev"
-      },
-      "DependsOn": [
-        "ApiGatewayMethodHelloGet",
-        "ApiGatewayMethodAccountAddPost",
-        "ApiGatewayMethodUserRegisterPost"
-      ]
-    },
-    "HelloWorldLambdaPermissionApiGateway": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "HelloWorldLambdaFunction",
-            "Arn"
-          ]
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "/*/*"
-            ]
-          ]
-        }
-      }
-    },
-    "AuthorizerFuncLambdaPermissionApiGateway": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "AuthorizerFuncLambdaFunction",
-            "Arn"
-          ]
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com"
-      }
-    },
-    "AddAccountLambdaPermissionApiGateway": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "AddAccountLambdaFunction",
-            "Arn"
-          ]
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "/*/*"
-            ]
-          ]
-        }
-      }
-    },
-    "RegisterUserLambdaPermissionApiGateway": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "RegisterUserLambdaFunction",
-            "Arn"
-          ]
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "/*/*"
-            ]
-          ]
-        }
-      }
     }
   },
   "Outputs": {
     "ServerlessDeploymentBucketName": {
       "Value": {
         "Ref": "ServerlessDeploymentBucket"
-      }
-    },
-    "HelloWorldLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "HelloWorldLambdaVersionOODNVCmd1MCZHrZdncNcFTx2zoRU0ZSvskk5SodR6A"
-      }
-    },
-    "AddAccountLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "AddAccountLambdaVersion5MEZXyG7BoYNHKLOndKFSHBcbPmSoX1Su4qSdWsVpw"
-      }
-    },
-    "RegisterUserLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "RegisterUserLambdaVersionKzxH1TScD0De0Rv5h2iEUenvU0pZriurFTIz26aDM"
-      }
-    },
-    "AuthorizerFuncLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "AuthorizerFuncLambdaVersionrXJujcgWNviIPCNckbyEgd2RVZ40nwKy3AxNBA9vzq0"
-      }
-    },
-    "ServiceEndpoint": {
-      "Description": "URL of the service endpoint",
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "https://",
-            {
-              "Ref": "ApiGatewayRestApi"
-            },
-            ".execute-api.us-east-1.amazonaws.com/dev"
-          ]
-        ]
       }
     }
   }

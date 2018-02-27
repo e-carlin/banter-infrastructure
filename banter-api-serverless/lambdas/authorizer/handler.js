@@ -81,6 +81,8 @@ function ValidateToken(pems, event, context) {
 
     jwt.verify(token, pem, { issuer: iss }, function(err, payload) {
       if(err) {
+        console.log("Error validating the JWT")
+        console.log("Error is: "+err)
         context.fail("Unauthorized");
       } else {
         //Valid token. Generate the API Gateway policy for the user

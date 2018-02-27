@@ -2,10 +2,16 @@
   "name": "add",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "plaid": "^2.3.0"
+  },
+  "devDependencies": {
+    "run-func": "^1.0.2"
+  }
 }
