@@ -7,7 +7,12 @@ provider:
   region: us-east-1
 
 plugins:
-  - serverless-sam
+  - serverless-python-requirements
+  #   - serverless-sam
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
 
 package:
   individually: true
@@ -26,7 +31,7 @@ functions:
           authorizer: AuthorizerFunc
 
   AddAccount:
-    runtime: nodejs6.10
+    runtime: python3.6
     handler: lambdas/account/add/handler.handler
     package:
       include:

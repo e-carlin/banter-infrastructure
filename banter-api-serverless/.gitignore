@@ -60,3 +60,10 @@ typings/
 
 # next.js build output
 .next
+
+##### python #####
+**/venv/
+
+
+##### SAM local #####
+build/*
