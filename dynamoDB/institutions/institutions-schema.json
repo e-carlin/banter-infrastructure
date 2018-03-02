@@ -1,9 +1,0 @@
-//Institutions
-{
-    "item_id" : "xxx", //Hash key
-    "user_email" : "xxx", //GSI
-    "access_token" :"xxx",
-    "name" : "xxx",
-    "institution_id" : "xxx"
-}
-

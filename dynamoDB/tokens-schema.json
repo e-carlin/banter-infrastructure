@@ -1,0 +1,7 @@
+//Tokens
+{
+    "itme_id" : "xxx", //Hash key
+    "access_token" : "xxx",
+    "user_email" : "xxx" //Could do GSI on this later can't think of use case rn
+}
+

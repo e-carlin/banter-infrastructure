@@ -1,0 +1,24 @@
+//Accounts
+{
+    "user_email" : "xxx", //Hash key
+    "institutions" : [
+        {
+            "item_id" : "xxx",
+            "name" : "xxx",
+            "instituttion_id" : "xxx",
+            "acccounts" : [
+                {
+                    "id" : "xxx",
+                    "name" : "xxx",
+                    "type" : "xxx",
+                    "subtype" : "xxx",
+                    "balances" : {
+                        "available" : 123,
+                        "current" : 123,
+                        "limit" : 123
+                    }
+                }
+            ]
+        }
+    ]
+}
