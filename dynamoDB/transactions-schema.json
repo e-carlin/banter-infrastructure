@@ -24,7 +24,7 @@
     "pending": false,
     "pending_transaction_id": "xxx",
     "account_owner": "xxx",
-    "transaction_id": "xxx",
+    "transaction_id": "xxx",  //GSI, plaid sends this id in some webhooks if the transaction is deleted
     "transaction_type": "xxx"
 
 
